@@ -31,8 +31,8 @@ const handleRefreshToken = async (req, res) => {
             // Set the fresh accessToken cookie
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
-                secure: false,
-                sameSite: 'Lax',
+                secure: true,
+                sameSite: 'none',
                 maxAge: 12 * 60 * 1000
             });
 
