@@ -1,7 +1,7 @@
 const Project = require("../models/project");
 const Milestone = require("../models/milestone");
 const Task = require("../models/task");
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const { generateRoadmap } = require("../services/aiService");
 const validateRoadmap = require("../utils/validateRoadmap");
@@ -99,15 +99,27 @@ const saveApprovedRoadmap = async (req, res) => {
             });
         }
 
-        // 4. Check ownership
-        if (!project.owner.equals(req.UserInfo.id)) {
+        // 4. Check ownership / collaboration permissions
+        const isAuthorized = project.owner.equals(req.UserInfo.id) || 
+            (project.collaborators && project.collaborators.some(id => id.equals(req.UserInfo.id)));
+
+        if (!isAuthorized) {
             return res.status(403).json({
                 success: false,
                 message: "Unauthorized"
             });
         }
 
-        // 5. Create milestones and tasks
+        // 5. Clean up existing milestones and tasks to prevent duplicates on regeneration
+        const existingMilestones = await Milestone.find({ project: projectId }).select("_id");
+        const existingMilestoneIds = existingMilestones.map(m => m._id);
+
+        if (existingMilestoneIds.length > 0) {
+            await Task.deleteMany({ milestone: { $in: existingMilestoneIds } });
+            await Milestone.deleteMany({ project: projectId });
+        }
+
+        // 6. Create fresh milestones and tasks
         const savedMilestones = [];
 
         for (const milestoneData of roadmap.milestones) {
