@@ -44,12 +44,11 @@ app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
-app.use('/projects', projectRoutes);
-app.use('/invitations', invitationRoutes);
 
 app.use(verifyJwt);
 
 app.use('/projects', projectRoutes);
+app.use('/invitations', invitationRoutes);
 app.use('/milestones', mileStoneRoutes)
 app.use("/", taskRoutes);
 app.use("/ai", aiRoutes);
