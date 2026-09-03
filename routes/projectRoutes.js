@@ -11,7 +11,7 @@ const {
   deleteProject,
 } = require("../controllers/projectController");
 
-const verifyJWT = require("../middleware/verifyJWT");
+const verifyJWT = require("../middleware/verifyJwt");
 
 router.use(verifyJWT);
 
