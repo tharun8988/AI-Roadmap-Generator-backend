@@ -34,9 +34,9 @@ const handleLogin = async (req, res) => {
     const result = await foundUser.save();
     console.log(result);
 
-    res.cookie("accessToken", accessToken, {httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 12 * 60 * 1000 });
+    res.cookie("accessToken", accessToken, {httpOnly: true, secure: true, sameSite: 'none', maxAge: 12 * 60 * 1000 });
 
-    res.cookie('jwt', refreshToken, {httpOnly: true, secure: false, sameSite: 'Lax', maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('jwt', refreshToken, {httpOnly: true, secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 });
     res.json({message: 'Login Successful'});
     }else{
         res.sendStatus(401);
