@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Project = require("../models/project");
-const Milestone = require("../models/Milestone");
+const Milestone = require("../models/milestone");
 
 const createMilestone = async (req, res) => {
 
