@@ -1,7 +1,8 @@
-const { GoogleGenAI } = require("@google/genai");
+const OpenAI = require("openai");
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
+const ai = new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: "https://api.groq.com/openai/v1",
 });
 
 module.exports = ai;
